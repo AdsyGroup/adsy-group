@@ -20,100 +20,101 @@
 
     <section id="project" class="project-section">
       <div>
-        <p class="text-h4 text-bold" style="color: white">PROJECTS</p>
-        <!-- TAMPILAN MOBILE  -->
-        <!-- :autoplay="true" -->
+        <div v-if="isMobile" class="card-slider">
+          <p class="text-h4 text-bold" style="color: white">PROJECTS</p>
 
-        <q-carousel
-          v-if="isMobile"
-          animated
-          v-model="slide"
-          navigation
-          infinite
-          arrows
-          swipeable
-          transition-prev="slide-right"
-          transition-next="slide-left"
-          class="mobile-carousel"
-        >
-          <q-carousel-slide
-            v-for="project in projects"
-            :key="project.id"
-            :name="project.id"
+          <q-carousel
+            arrows
+            swipeable
+            animated
+            infinite
+            :autoplay="true"
+            style="border-radius: 15px; overflow: hidden"
+            v-model="slide"
+            transition-prev="slide-right"
+            transition-next="slide-left"
+            height="450px"
           >
-            <q-card
-              class="my-card"
-              flat
-              bordered
-              @click="$router.push(project.link)"
+            <q-carousel-slide
+              v-for="project in projects"
+              :key="project.id"
+              :name="project.id"
+              class="carousel-slide"
+              style="
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                padding: 0px;
+                margin: 0px;
+              "
             >
-              <img :src="project.image_url" class="carousel-img" />
-              <q-card-actions class="carousel-actions">
-                <p class="text-bold">{{ project.title }}</p>
-                <q-btn flat rounded class="text-caption">{{
-                  project.description
-                }}</q-btn>
-              </q-card-actions>
-            </q-card>
-          </q-carousel-slide>
-        </q-carousel>
-
-        <!-- TAMPILAN PC -->
-        <div v-else class="row desktop-grid">
-          <q-card
-            v-for="project in projects"
-            :key="project.id"
-            class="my-card q-col-12 q-col-sm-6 q-col-md-4"
-            flat
-            bordered
-            @click="$router.push(project.link)"
-          >
-            <img :src="project.image_url" class="desktop-img" />
-            <q-card-actions class="desktop-actions">
-              <p class="text-bold" style="margin: 5px 10px">
-                {{ project.title }}
-              </p>
-              <q-btn flat rounded class="text-caption">{{
-                project.description
-              }}</q-btn>
-            </q-card-actions>
-          </q-card>
+              <q-card
+                class="mobile-card"
+                flat
+                bordered
+                @click="$router.push(project.link)"
+              >
+                <q-img
+                  :src="project.image_url"
+                  style="width: 100%; height: 300px; object-fit: cover"
+                />
+                <q-card-actions class="q-pa-md">
+                  <p
+                    style="margin: 20px 5px; font-size: 30px"
+                    class="text-bold"
+                  >
+                    {{ project.title }}
+                  </p>
+                  <p
+                    style="margin: 0%; font-size: 20px"
+                    flat
+                    rounded
+                    class="text-caption"
+                  >
+                    {{ project.description }}
+                  </p>
+                </q-card-actions>
+              </q-card>
+            </q-carousel-slide>
+          </q-carousel>
         </div>
       </div>
-      <!-- <div class="column">
+
+      <div v-if="!isMobile" class="column">
         <p class="text-h4 text-bold" style="color: white">PROJECTS</p>
         <div class="row">
           <q-card
             v-for="project in projects"
             :key="project.id"
-            class="my-card"
+            class="mobile-card"
+            style="width: 400px; height: auto; border-radius: 24px"
             flat
             bordered
             @click="$router.push(project.link)"
           >
-            <img :src="project.image_url" />
+            <img
+              :src="project.image_url"
+              style="width: 100%; height: 150px; object-fit: cover"
+            />
 
             <q-card-actions style="justify-content: space-between">
               <p class="text-bold" style="margin: 7px 5px">
                 {{ project.title }}
               </p>
-              <q-btn
-                flat
-                rounded
-                class="text-caption"
-                style="margin: 7px 5px"
-                >{{ project.description }}</q-btn
-              >
+              <p style="margin: 7px 5px" flat rounded class="text-caption">
+                {{ project.description }}
+              </p>
             </q-card-actions>
           </q-card>
         </div>
-      </div> -->
+      </div>
     </section>
   </q-page>
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import lottie from "lottie-web";
 import waveAnimation from "../assets/animationLandingPage.json";
 import { route } from "quasar/wrappers";
@@ -131,7 +132,7 @@ export default defineComponent({
   },
   data() {
     return {
-      slide: 1,
+      slide: ref(1),
       autoplay: true,
       isMobile: false,
       projects: [
@@ -156,34 +157,6 @@ export default defineComponent({
           image_url: "/src/assets/pus.jpg",
           link: "/project-3",
         },
-        // {
-        //   id: 3,
-        //   title: "PROJECT 3",
-        //   description: "short description",
-        //   image_url: "/src/assets/Group 77.png",
-        //   link: "/project-3",
-        // },
-        // {
-        //   id: 4,
-        //   title: "PROJECT 4",
-        //   description: "short description",
-        //   image_url: "/src/assets/Group 77.png",
-        //   link: "/project-3",
-        // },
-        // {
-        //   id: 5,
-        //   title: "PROJECT 5",
-        //   description: "short description",
-        //   image_url: "/src/assets/Group 77.png",
-        //   link: "/project-3",
-        // },
-        // {
-        //   id: 6,
-        //   title: "PROJECT 6",
-        //   description: "short description",
-        //   image_url: "/src/assets/Group 77.png",
-        //   link: "/project-3",
-        // },
       ],
     };
   },
@@ -202,7 +175,7 @@ export default defineComponent({
       });
     },
     checkIsMobile() {
-      this.isMobile = window.innerWidth <= 600;
+      this.isMobile = window.innerWidth <= 900;
     },
     handleMouseEnter() {
       if (this.isMobile) {
@@ -221,11 +194,6 @@ export default defineComponent({
 <style>
 .q-btn {
   text-transform: none;
-}
-.my-card {
-  width: 100%;
-  max-width: 300px;
-  border-radius: 24px;
 }
 
 .landing-page {
@@ -272,40 +240,41 @@ export default defineComponent({
   gap: 20px;
 }
 
-/* .lottie-bg {
-  filter: hue-rotate(90deg);
-} */
-
-.responsive-carousel .q-carousel-slide {
+/* .responsive-carousel .q-carousel-slide {
   display: flex;
   justify-content: center;
   align-items: center;
+} */
+
+/* .custom-caption {
+    text-align: center;
+    padding: 12px;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.3);
+  } */
+
+.q-carousel {
+  box-shadow: none;
+  background: transparent;
 }
 
-@media (max-width: 600px) {
-  .carousel-img {
-    width: 100%;
-    height: auto;
-  }
-  .carousel-actions {
-    display: none;
-  }
-  .q-carousel {
-    background-color: #a6c292;
-    height: 20%;
-  }
+/* .carousel-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+} */
+
+.mobile-card {
+  width: 80vw;
+  max-width: 550px;
+  height: auto;
+  border-radius: 24px;
 }
 
-@media (min-width: 601px) {
-  .carousel-img {
-    width: auto;
-    height: 200px;
+@media (min-width: 700px) {
+  .mobile-card {
+    width: 80vw;
+    max-width: 550px;
   }
-  .carousel-actions {
-    display: flex;
-    justify-content: space-between;
-  }
-
-
 }
 </style>
