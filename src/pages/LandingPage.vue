@@ -19,41 +19,92 @@
     </section>
 
     <section id="project" class="project-section">
-      <div class="column">
-        <p class="text-h4 text-bold" style="color: white;" >PROJECTS</p>
-        <div class="row">
-          <q-card class="my-card" flat bordered @click="$router.push('/card-game') " >
-            <img src="/src/assets/unsplash_FW589opoYjg.png" />
+      <div>
+       <!-- TAMPILAN MOBILE  -->
+       <!-- :autoplay="true" -->
 
-            <q-card-actions style="justify-content: space-between">
-              <p class="text-bold" style="margin: 7px 5px">CARD GAME</p>
-              <q-btn flat rounded class="text-caption" style="margin: 7px 5px"
-                >short description</q-btn
-              >
-            </q-card-actions>
-          </q-card>
-          <q-card class="my-card" flat bordered>
-            <img src="/src/assets/unsplash_FW589opoYjg.png" />
+        <q-carousel
+          v-if="isMobile"
+          animated
+          v-model="slide"
+          navigation
+          infinite
+          arrows
+          swipeable
+          transition-prev="slide-right"
+          transition-next="slide-left"
+          class="mobile-carousel"
+        >
+          <q-carousel-slide
+            v-for="project in projects"
+            :key="project.id"
+            :name="project.id"
+          >
+            <q-card
+              class="my-card"
+              flat
+              bordered
+              @click="$router.push(project.link)"
+            >
+              <img :src="project.image_url" class="carousel-img" />
+              <q-card-actions class="carousel-actions">
+                <p class="text-bold">{{ project.title }}</p>
+                <q-btn flat rounded class="text-caption">{{
+                  project.description
+                }}</q-btn>
+              </q-card-actions>
+            </q-card>
+          </q-carousel-slide>
+        </q-carousel>
 
-            <q-card-actions style="justify-content: space-between">
-              <p class="text-bold" style="margin: 7px 5px">CARD GAME</p>
-              <q-btn flat rounded class="text-caption" style="margin: 7px 5px"
-                >short description</q-btn
-              >
-            </q-card-actions>
-          </q-card>
-          <q-card class="my-card" flat bordered>
-            <img src="/src/assets/unsplash_FW589opoYjg.png" />
-
-            <q-card-actions style="justify-content: space-between">
-              <p class="text-bold" style="margin: 7px 5px">CARD GAME</p>
-              <q-btn flat rounded class="text-caption" style="margin: 7px 5px"
-                >short description</q-btn
-              >
+        <!-- TAMPILAN PC -->
+        <div v-else class="row desktop-grid">
+          <q-card
+            v-for="project in projects"
+            :key="project.id"
+            class="my-card q-col-12 q-col-sm-6 q-col-md-4"
+            flat
+            bordered
+            @click="$router.push(project.link)"
+          >
+            <img :src="project.image_url" class="desktop-img" />
+            <q-card-actions class="desktop-actions">
+              <p class="text-bold" style="margin: 5px 10px">{{ project.title }}</p>
+              <q-btn flat rounded class="text-caption">{{
+                project.description
+              }}</q-btn>
             </q-card-actions>
           </q-card>
         </div>
       </div>
+      <!-- <div class="column">
+        <p class="text-h4 text-bold" style="color: white">PROJECTS</p>
+        <div class="row">
+          <q-card
+            v-for="project in projects"
+            :key="project.id"
+            class="my-card"
+            flat
+            bordered
+            @click="$router.push(project.link)"
+          >
+            <img :src="project.image_url" />
+
+            <q-card-actions style="justify-content: space-between">
+              <p class="text-bold" style="margin: 7px 5px">
+                {{ project.title }}
+              </p>
+              <q-btn
+                flat
+                rounded
+                class="text-caption"
+                style="margin: 7px 5px"
+                >{{ project.description }}</q-btn
+              >
+            </q-card-actions>
+          </q-card>
+        </div>
+      </div> -->
     </section>
   </q-page>
 </template>
@@ -69,6 +120,41 @@ export default defineComponent({
   name: "LandingPage",
   mounted() {
     this.initLottie();
+    window.addEventListener("resize", this.checkIsMobile);
+  },
+
+  beforeUnmount() {
+    window.removeEventListener("resize", this.checkIsMobile);
+  },
+  data() {
+    return {
+      slide: 1,
+      autoplay: true,
+      isMobile: false,
+      projects: [
+        {
+          id: 1,
+          title: "CARD GAME",
+          description: "short description",
+          image_url: "/src/assets/unsplash_FW589opoYjg.png",
+          link: "/card-game",
+        },
+        {
+          id: 2,
+          title: "PROJECT 2",
+          description: "short description",
+          image_url: "/src/assets/Group 76.png",
+          link: "/project-2",
+        },
+        {
+          id: 3,
+          title: "PROJECT 3",
+          description: "short description",
+          image_url: "/src/assets/Group 77.png",
+          link: "/project-3",
+        },
+      ],
+    };
   },
   methods: {
     scrollDown() {
@@ -83,6 +169,19 @@ export default defineComponent({
         autoplay: true,
         animationData: waveAnimation, // Data animasi JSON
       });
+    },
+    checkIsMobile() {
+      this.isMobile = window.innerWidth <= 600;
+    },
+    handleMouseEnter() {
+      if (this.isMobile) {
+        this.autoplay = false;
+      }
+    },
+    handleMouseLeave() {
+      if (this.isMobile) {
+        this.autoplay = true;
+      }
     },
   },
 });
@@ -145,4 +244,31 @@ export default defineComponent({
 /* .lottie-bg {
   filter: hue-rotate(90deg);
 } */
+
+.responsive-carousel .q-carousel-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (max-width: 600px) {
+  .carousel-img {
+    width: 100%;
+    height: auto;
+  }
+  .carousel-actions {
+    display: none;
+  }
+}
+
+@media (min-width: 601px) {
+  .carousel-img {
+    width: auto;
+    height: 200px;
+  }
+  .carousel-actions {
+    display: flex;
+    justify-content: space-between;
+  }
+}
 </style>
