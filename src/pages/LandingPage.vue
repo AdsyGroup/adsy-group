@@ -20,8 +20,9 @@
 
     <section id="project" class="project-section">
       <div>
-       <!-- TAMPILAN MOBILE  -->
-       <!-- :autoplay="true" -->
+        <p class="text-h4 text-bold" style="color: white">PROJECTS</p>
+        <!-- TAMPILAN MOBILE  -->
+        <!-- :autoplay="true" -->
 
         <q-carousel
           v-if="isMobile"
@@ -69,7 +70,9 @@
           >
             <img :src="project.image_url" class="desktop-img" />
             <q-card-actions class="desktop-actions">
-              <p class="text-bold" style="margin: 5px 10px">{{ project.title }}</p>
+              <p class="text-bold" style="margin: 5px 10px">
+                {{ project.title }}
+              </p>
               <q-btn flat rounded class="text-caption">{{
                 project.description
               }}</q-btn>
@@ -150,9 +153,37 @@ export default defineComponent({
           id: 3,
           title: "PROJECT 3",
           description: "short description",
-          image_url: "/src/assets/Group 77.png",
+          image_url: "/src/assets/pus.jpg",
           link: "/project-3",
         },
+        // {
+        //   id: 3,
+        //   title: "PROJECT 3",
+        //   description: "short description",
+        //   image_url: "/src/assets/Group 77.png",
+        //   link: "/project-3",
+        // },
+        // {
+        //   id: 4,
+        //   title: "PROJECT 4",
+        //   description: "short description",
+        //   image_url: "/src/assets/Group 77.png",
+        //   link: "/project-3",
+        // },
+        // {
+        //   id: 5,
+        //   title: "PROJECT 5",
+        //   description: "short description",
+        //   image_url: "/src/assets/Group 77.png",
+        //   link: "/project-3",
+        // },
+        // {
+        //   id: 6,
+        //   title: "PROJECT 6",
+        //   description: "short description",
+        //   image_url: "/src/assets/Group 77.png",
+        //   link: "/project-3",
+        // },
       ],
     };
   },
@@ -163,7 +194,7 @@ export default defineComponent({
     },
     initLottie() {
       lottie.loadAnimation({
-        container: this.$refs.lottieAnimation, // Elemen DOM di mana animasi akan dimuat
+        container: this.$refs.lottieAnimation,
         renderer: "svg",
         loop: true,
         autoplay: true,
@@ -205,23 +236,23 @@ export default defineComponent({
 }
 
 .home-section {
-  height: 100vh; /* Menjadikan masing-masing bagian sebesar 1 layar penuh */
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px;
   background: linear-gradient(to bottom, #000000, #365c45);
-  position: relative; /* Ensure sections are positioned above the background */
+  position: relative;
 }
 
 .project-section {
-  height: 100vh; /* Menjadikan masing-masing bagian sebesar 1 layar penuh */
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px;
   background-color: #365c45;
-  position: relative; /* Ensure sections are positioned above the background */
+  position: relative;
 }
 
 .lottie-bg {
@@ -238,7 +269,7 @@ export default defineComponent({
 .row {
   display: flex;
   justify-content: space-between;
-  gap: 20px; /* Jarak antar kartu dalam baris */
+  gap: 20px;
 }
 
 /* .lottie-bg {
@@ -259,6 +290,10 @@ export default defineComponent({
   .carousel-actions {
     display: none;
   }
+  .q-carousel {
+    background-color: #a6c292;
+    height: 20%;
+  }
 }
 
 @media (min-width: 601px) {
@@ -270,5 +305,7 @@ export default defineComponent({
     display: flex;
     justify-content: space-between;
   }
+
+
 }
 </style>

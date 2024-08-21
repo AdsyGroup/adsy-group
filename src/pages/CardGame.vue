@@ -4,11 +4,11 @@
     class="card-game q-pa-none"
   >
     <div v-show="loading" class="centered-text">
-      <p class="text-h3" style="font-size: 90px">CARD GAME</p>
+      <p class="card-game-text text-h3">CARD GAME</p>
     </div>
 
     <div v-show="!loading">
-      <div class="card-game" style="margin: 50px">
+      <div v-if="!isMobile" class="card-game" style="margin: 50px">
         <q-btn
           rounded
           flat
@@ -47,6 +47,38 @@
         </q-btn>
       </div>
 
+      <div v-else>
+        <div class="q-pa-md" style="margin: 50px 20px; padding: 0px">
+          <q-btn-dropdown
+            rounded
+            unelevated
+            label="Card Category"
+            dropdown-icon="expand_circle_down"
+            class="dropdown-button"
+          >
+            <q-list>
+              <q-item clickable v-close-popup @click="onItemClick">
+                <q-item-section>
+                  <q-item-label>Couple Card</q-item-label>
+                </q-item-section>
+              </q-item>
+
+              <q-item clickable v-close-popup @click="onItemClick">
+                <q-item-section>
+                  <q-item-label>Tarot</q-item-label>
+                </q-item-section>
+              </q-item>
+
+              <q-item clickable v-close-popup @click="onItemClick">
+                <q-item-section>
+                  <q-item-label>Truth or Dare</q-item-label>
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </q-btn-dropdown>
+        </div>
+      </div>
+
       <div class="card-center">
         <q-card
           flat
@@ -58,19 +90,7 @@
             border-radius: 24px;
           "
         >
-          <p
-            style="
-              font-size: 31px;
-              margin: 0px;
-              color: #b2afff;
-              padding: 50px;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              height: 100%;
-              font-family: 'Fredoka One', sans-serif;
-            "
-          >
+          <p class="text-card">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua.
           </p>
@@ -85,19 +105,39 @@ export default {
   name: "CardGame",
   data() {
     return {
-      activeButton: "",
+      activeButton: "couple-card",
       loading: true,
+      isMobile: false,
     };
   },
   mounted() {
-    // Menghilangkan loading screen setelah 3 detik
     setTimeout(() => {
       this.loading = false;
     }, 2500);
+    window.addEventListener("resize", this.checkIsMobile);
   },
+
+  beforeUnmount() {
+    window.removeEventListener("resize", this.checkIsMobile);
+  },
+
   methods: {
     setActive(button) {
-      this.activeButton = button; // Set tombol yang aktif
+      this.activeButton = button;
+    },
+
+    checkIsMobile() {
+      this.isMobile = window.innerWidth <= 600;
+    },
+    handleMouseEnter() {
+      if (this.isMobile) {
+        this.autoplay = false;
+      }
+    },
+    handleMouseLeave() {
+      if (this.isMobile) {
+        this.autoplay = true;
+      }
     },
   },
 };
@@ -119,7 +159,6 @@ export default {
   background-size: cover; /* Mengatur agar gambar menutupi seluruh halaman */
   background-position: center;
 }
-
 
 .active-button {
   background-color: #fde9cf;
@@ -148,14 +187,65 @@ export default {
   color: black;
 }
 
-.card-center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 70vh;
+@media (max-width: 600px) {
+  .card-center {
+    display: flex;
+    font-size: 20px;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+    margin: 0px 20px;
+  }
+
+  .text-card {
+    font-size: 5vw;
+    margin: 0px;
+    color: #b2afff;
+    padding: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    font-family: "Fredoka One", sans-serif;
+  }
+
+  .card-game-text{
+    font-size: 10vw
+  }
+}
+@media (min-width: 600px) {
+  .card-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+  }
+
+  .text-card {
+    font-size: 30px;
+    margin: 0px;
+    color: #b2afff;
+    padding: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    font-family: "Fredoka One", sans-serif;
+  }
+
+  .card-game-text{
+    font-size: 90px
+  }
 }
 
 .q-btn {
   text-transform: none;
+}
+
+.dropdown-button {
+  background-color: #fde9cf;
+  color: #b2afff;
+  height: 50px;
+  width: 200px;
 }
 </style>
