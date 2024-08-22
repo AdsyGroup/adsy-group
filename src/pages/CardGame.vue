@@ -89,10 +89,10 @@
             height: 323px;
             border-radius: 24px;
           "
+          @click="nextContent"
         >
           <p class="text-card">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            {{ content[currentIndex].contentText }}
           </p>
         </q-card>
       </div>
@@ -108,6 +108,24 @@ export default {
       activeButton: "couple-card",
       loading: true,
       isMobile: false,
+      currentIndex: 0,
+      content: [
+        {
+          id: 1,
+          contentText:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        },
+        {
+          id: 2,
+          contentText:
+            "Ya Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        },
+        {
+          id: 3,
+          contentText:
+            "Duh Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        },
+      ],
     };
   },
   mounted() {
@@ -138,6 +156,11 @@ export default {
       if (this.isMobile) {
         this.autoplay = true;
       }
+    },
+
+    nextContent() {
+      this.currentIndex = (this.currentIndex + 1) % this.content.length;
+      // console.log(this.currentIndex);
     },
   },
 };
@@ -209,8 +232,8 @@ export default {
     font-family: "Fredoka One", sans-serif;
   }
 
-  .card-game-text{
-    font-size: 10vw
+  .card-game-text {
+    font-size: 10vw;
   }
 }
 @media (min-width: 600px) {
@@ -233,8 +256,8 @@ export default {
     font-family: "Fredoka One", sans-serif;
   }
 
-  .card-game-text{
-    font-size: 90px
+  .card-game-text {
+    font-size: 90px;
   }
 }
 
