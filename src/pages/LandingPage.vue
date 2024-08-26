@@ -1,8 +1,9 @@
 <template>
   <q-page class="landing-page">
-    <div ref="lottieAnimation" class="lottie-bg"></div>
     <section id="home" class="home-section">
       <div class="col-center text-center">
+        <div ref="lottieAnimation" class="lottie-bg"></div>
+
         <h3 style="margin: 0%; color: white">ADSY GROUP</h3>
         <h5 style="margin: 0%; color: white">Make your ideas to life</h5>
 
@@ -227,10 +228,9 @@ export default defineComponent({
   position: absolute;
   align-content: center;
   top: 0;
-  left: 0%;
-  width: 50%;
-  height: 50%;
-  z-index: 1;
+  left: 3%;
+  width: 100%;
+  height: 100%;
   color: #a6c292;
 }
 
