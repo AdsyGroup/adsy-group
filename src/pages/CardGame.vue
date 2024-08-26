@@ -11,39 +11,18 @@
       <div v-if="!isMobile" class="card-game" style="margin: 50px">
         <q-btn
           rounded
-          flat
-          class="button-header"
-          :class="{
-            'active-button': activeButton === 'couple-card',
-            'inactive-button': activeButton !== 'couple-card',
+          v-for="(button, index) in buttonCategory"
+          :key="index"
+          :label="button.label"
+          :unelevated="activeButton === index"
+          :outline="activeButton !== index"
+          :style="{
+            'background-color': activeButton === index ? '#fde9cf' : '',
+            color: activeButton === index ? '#b2afff' : 'black',
           }"
-          @click="setActive('couple-card')"
-        >
-          Couple Card
-        </q-btn>
-        <q-btn
-          rounded
-          flat
           class="button-header"
-          :class="{
-            'active-button': activeButton === 'tarot',
-            'inactive-button': activeButton !== 'tarot',
-          }"
-          @click="setActive('tarot')"
+          @click="setActive(index)"
         >
-          Tarot
-        </q-btn>
-        <q-btn
-          rounded
-          flat
-          class="button-header"
-          :class="{
-            'active-button': activeButton === 'truth-or-dare',
-            'inactive-button': activeButton !== 'truth-or-dare',
-          }"
-          @click="setActive('truth-or-dare')"
-        >
-          Truth or Dare
         </q-btn>
       </div>
 
@@ -80,21 +59,35 @@
       </div>
 
       <div class="card-center">
-        <q-card
-          flat
-          class="text-center"
-          style="
-            background-color: #fde9cf;
-            width: 554px;
-            height: 323px;
-            border-radius: 24px;
-          "
-          @click="nextContent"
-        >
-          <p class="text-card">
-            {{ content[currentIndex].contentText }}
-          </p>
-        </q-card>
+        <transition name="flip" mode="out-in">
+          <q-card
+            flat
+            :key="currentIndex"
+            class="text-center card"
+            style="
+              background-color: #fde9cf;
+              width: 554px;
+              height: 323px;
+              border-radius: 24px;
+            "
+            @click="nextContent"
+          >
+            <p class="text-card">
+              {{ content[currentIndex].contentText }}
+            </p>
+          </q-card>
+        </transition>
+
+        <transition name="flip" mode="out-in">
+          <div
+            v-if="!showFront"
+            key="back"
+            class="card back-card"
+            style="background-color: #000000"
+          >
+            <!-- Back of the card -->
+          </div>
+        </transition>
       </div>
     </div>
   </q-page>
@@ -105,10 +98,11 @@ export default {
   name: "CardGame",
   data() {
     return {
-      activeButton: "couple-card",
+      activeButton: 0,
       loading: true,
       isMobile: false,
       currentIndex: 0,
+      showFront: true,
       content: [
         {
           id: 1,
@@ -117,14 +111,17 @@ export default {
         },
         {
           id: 2,
-          contentText:
-            "Ya Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+          contentText: "Halo, ada yang bisa saya bantu?",
         },
         {
           id: 3,
-          contentText:
-            "Duh Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+          contentText: "Selamat pagi",
         },
+      ],
+      buttonCategory: [
+        { label: "Couple Card" },
+        { label: "Tarot" },
+        { label: "Truth or Dare" },
       ],
     };
   },
@@ -140,8 +137,8 @@ export default {
   },
 
   methods: {
-    setActive(button) {
-      this.activeButton = button;
+    setActive(index) {
+      this.activeButton = index;
     },
 
     checkIsMobile() {
@@ -161,6 +158,10 @@ export default {
     nextContent() {
       this.currentIndex = (this.currentIndex + 1) % this.content.length;
       // console.log(this.currentIndex);
+      this.showFront = !this.showFront;
+      setTimeout(() => {
+        this.currentIndex = (this.currentIndex + 1) % this.content.length;
+      }, 300);
     },
   },
 };
@@ -270,5 +271,48 @@ export default {
   color: #b2afff;
   height: 50px;
   width: 200px;
+}
+
+.card-center {
+  perspective: 1000px;
+  display: flex;
+  justify-content: center;
+}
+
+.card-wrapper {
+  position: relative;
+  width: 554px;
+  height: 323px;
+}
+
+.card {
+  width: 100%;
+  height: 100%;
+  border-radius: 24px;
+  backface-visibility: hidden; /* Menyembunyikan bagian belakang kartu saat flipping */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute; /* Tambahkan ini untuk memastikan elemen berada di posisi yang sama */
+}
+
+.front-card {
+  transform: rotateY(0deg);
+}
+
+.back-card {
+  transform: rotateY(180deg);
+  background-color: #000000; /* Pastikan ini diterapkan untuk warna hitam */
+}
+
+.flip-enter-active,
+.flip-leave-active {
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.flip-enter,
+.flip-leave-to {
+  transform: rotateY(180deg);
 }
 </style>
