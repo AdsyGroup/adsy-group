@@ -1,9 +1,10 @@
 <?php
 
 namespace Database\Seeders;
-
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class CardSeeder extends Seeder
 {
@@ -16,6 +17,7 @@ class CardSeeder extends Seeder
         DB::table('tb_card')->insert([
             'contentText' => 'testing1',
             'category' =>'general'
+
         ]);
     }
 }
