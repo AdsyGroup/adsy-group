@@ -9,3 +9,4 @@ Route::get('/user', function (Request $request) {
 });
 
 Route::post('/showgame',[MainController::class,'showGame']);
+Route::post('/showcard',[CardController::class,'showCard']);
